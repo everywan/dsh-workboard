@@ -61,6 +61,7 @@ The card runs in a sandboxed frame with its own origin. It cannot reach the Harn
 | `workboard.save(data)` | Replaces the saved data with a JSON object (≤ 200 KB) and resolves when stored. You can read it with `get` |
 | `workboard.open(url)` | Opens an http(s) or mailto link in a new browser tab; plain `<a href>` links do the same |
 | `workboard.ask(prompt)` | Opens a new agent session with `prompt` in the draft; the user sends it |
+| `workboard.vault(op, payload)` | Reads and writes the notes file the Workboard note card is bound to: `'section'` `{title}` returns `{ok, file, title, text, mtime}`, `'sectionWrite'` `{title, text, expect}` replaces that `## section` body. `expect` is the body you last read; a mismatch means the file changed elsewhere and the write is refused. When no notes file is configured it falls back to the note card's own scratchpad (`file: ''`); only the configured file under the Agent workspace is ever touched. |
 
 Call `workboard.fetch` again on an interval for live data; one minute or more is polite for most APIs. Re-render from `workboard.on` rather than reloading. Uncaught errors and rejected promises are reported to the card and to `lastError`, so let real failures surface, but show a friendly message for expected ones such as a failed request.
 

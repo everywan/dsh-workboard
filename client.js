@@ -59,12 +59,13 @@ window.__ModuleLoader__.load({
     const zh = {
       lang: 'zh-CN', title: '工作台', loadFailed: '加载失败', err_timeout: '请求超时，稍后自动重试', err_network: '网络不可用，稍后自动重试', err_busy: '服务暂时不可用，稍后自动重试', empty: '看板上还没有 widget',
       today: '今日', clock: '时钟', todo: '待办', note: '速记', calendar: '日历', weather: '天气',
-      d_today: '问候、时间、天气、格言合成一条横栏', d_todo: '未完成自动结转，Agent 可读写', d_note: '自动保存，当前行可转待办',
+      d_today: '问候、时间、天气、格言合成一条横栏', d_todo: '未完成自动结转，Agent 可读写', d_note: '跟 0-workspace.md 的 ## todo 双向同步，快捷键把当前行发给 Agent',
       d_calendar: '系统日历和 ICS 订阅的日程与月历，中文界面显示农历', d_weather: 'Open-Meteo 天气与空气质量', d_clock: '时间、问候与年度进度',
       night: '夜深了', morning: '早上好', noon: '中午好', afternoon: '下午好', evening: '晚上好', greetName: '{g}，{name}',
       week: '第 {n} 周', year: '今年已过 {n}%', nextQuote: '换一条',
       addTodo: '添加待办', carried: '结转', done: '已完成 {n}', remove: '移除', complete: '完成', reopen: '恢复', noTodos: '没有待办',
-      notePlaceholder: '随手记', saved: '已保存 {t}', saving: '保存中…', lineToTodo: '当前行转待办',
+      clickToEdit: '点一下编辑', notePlaceholder: '随手记', unsaved: '未保存到文件', conflictHint: '文件已被外部修改', reload: '重载', reloadHint: '丢弃本地编辑，重新读文件', overwrite: '覆盖', overwriteHint: '用卡片里的内容覆盖文件里的这一段',
+      f_notePresets: '快捷键（每行一个：名称 | 模板，{line} 为当前行）',
       setCity: '设置城市', feels: '体感 {n}°', humidity: '湿度 {n}%',
       wx_clear: '晴', wx_partly: '多云', wx_cloud: '阴', wx_fog: '雾', wx_drizzle: '毛毛雨', wx_rain: '雨', wx_snow: '雪', wx_showers: '阵雨', wx_thunder: '雷雨',
       aqi0: '优', aqi1: '良', aqi2: '轻度污染', aqi3: '中度污染', aqi4: '重度污染', aqi5: '严重污染',
@@ -72,7 +73,7 @@ window.__ModuleLoader__.load({
       calConnect: '连接系统日历', calAsking: '等待授权…', calDenied: '在「系统设置 → 隐私与安全性 → 日历」里允许 DeepSeek Harness', f_systemCalendar: '显示 macOS 系统日历',
       defaultBoard: '默认', untitled: '未命名', newBoard: '看板 {n}', newBoardLabel: '新建看板', rename: '双击改名',
       edit: '编辑', doneEdit: '完成', addWidget: '添加 widget', added: '已添加', add: '添加', settings: '设置', save: '保存', cancel: '取消',
-      saved: '已保存', cfg_personal: '个人', cfg_agent: '交给 Agent 时', openSettings: '打开设置',
+      saved: '已保存', cfg_personal: '个人', cfg_agent: '交给 Agent 时', cfg_notes: '速记笔记', openSettings: '打开设置',
       intro: '点这里编辑看板：添加 widget、拖动排序、调整尺寸', introOk: '知道了',
       searchWidget: '搜索 widget', cat_all: '全部', cat_daily: '日常', cat_agent: 'DeepSeek', cat_news: '资讯', cat_tools: '效率', cat_dev: '开发', cat_plugin: '插件',
       deleteBoard: '删除看板', confirmDelete: '确认删除', size: '尺寸', drag: '拖动排序',
@@ -102,9 +103,11 @@ window.__ModuleLoader__.load({
       markAllRead: '全部已读', unreadCount: '{n} 条未读', f_hideRead: '隐藏已读',
       addHabit: '添加习惯，回车保存', noHabits: '在下方添加一个习惯，每天点对应日期的格子打卡', streak: '连续 {n} 天', markDay: '{d} 打卡', todayShort: '今',
       prompt: 'Prompt 快启', usage: '用量', running: '运行中', git: 'Git 工作区', github: 'GitHub', system: '系统状态', photo: '相框', market: '行情',
-      d_market: '汇率、A 股 / 港股 / 美股和加密货币报价', f_symbols: '代码（每行一个，后面可加名称）', f_upColor: '涨跌颜色', up_red: '红涨绿跌', up_green: '绿涨红跌',
+      d_market: '汇率、A 股 / 港股 / 美股、贵金属和加密货币报价', f_symbols: '代码（每行一个，后面可加名称）', f_upColor: '涨跌颜色', up_red: '红涨绿跌', up_green: '绿涨红跌',
       mk_symbols: 'USD/CNY\nHKD/CNY\nhk00700 腾讯\nBTC', mk_none: '在设置里添加代码', mk_unknown: '无法识别', mk_missing: '未找到',
       trending: '热榜', d_trending: '微博、知乎、36 氪、Hacker News、GitHub 等国内外热榜', tr_none: '在设置里选择信源',
+      f_trOrder: '信源顺序', ph_trOrder: '逗号分隔的信源 id，如 zhihu,github,36kr', tr_openSide: '点开时用右侧栏浏览器',
+      awakeOff: '保持唤醒', awakeOn: '已阻止休眠', awakeTip: '阻止系统空闲休眠；屏幕仍会按系统设置熄灭',
       tr_weibo: '微博', tr_zhihu: '知乎', tr_36kr: '36 氪', tr_sspai: '少数派', tr_bilibili: 'B 站', tr_v2ex: 'V2EX',
       tr_hn: 'Hacker News', tr_github: 'GitHub', tr_producthunt: 'Product Hunt', tr_reddit: 'Reddit',
       d_photo: '轮播本机文件夹里的照片，点击换下一张', f_photoDir: '照片文件夹', f_shuffle: '随机顺序', f_every: '切换间隔', every_m: '{n} 分钟', every_h: '{n} 小时', every_d: '{n} 天', every_off: '不自动切换',
@@ -132,7 +135,7 @@ window.__ModuleLoader__.load({
       f_prices: '单价（每行一个：模型 输入 输出 [缓存读] [缓存写]，美元 / 百万 token；模型可写前缀）',
       f_orPrices: '未填单价的模型按 OpenRouter 公开价估算', u_costOr: '约 ${n}（按 OpenRouter 公开价）',
       d_prompt: '一句话或预设模板直接开新会话',
-      promptPlaceholder: '让 Agent 做点什么，回车发送', sending: '发送中…', f_presets: '预设（每行一个：名称 | prompt）', ws_label: '工作区', ws_default: '跟随 Harness 默认', f_agentWorkspace: '任务工作区',
+      promptPlaceholder: '让 Agent 做点什么，回车发送', sending: '发送中…', f_presets: '预设（每行一个：名称 | prompt）', ws_label: '工作区', ws_default: '跟随 Harness 默认', f_agentWorkspace: '任务工作区', f_noteFile: '笔记文件', f_noteSection: '笔记段落',
       defaultPresets: '今日计划 | 读取我工作台上的待办和日程，帮我排出今天最该做的三件事\n周报草稿 | 读取我工作台上本周完成的待办，写一份简短的周报草稿',
       toAgent: '交给 Agent', itemCount: '{n} 条',
       cat_mine: '我的', gen_card: '用 Agent 生成', gen_hint: '说一句想要什么，Agent 做好后放到当前看板',
@@ -249,12 +252,13 @@ window.__ModuleLoader__.load({
     const en = {
       lang: 'en-US', title: 'Workboard', loadFailed: 'Failed to load', err_timeout: 'Request timed out, retrying shortly', err_network: 'Network unavailable, retrying shortly', err_busy: 'Service unavailable, retrying shortly', empty: 'No widgets on this board yet',
       today: 'Today', clock: 'Clock', todo: 'To-do', note: 'Notes', calendar: 'Calendar', weather: 'Weather',
-      d_today: 'Greeting, time, weather and a quote in one banner', d_todo: 'Unfinished items carry over; the agent can read and edit', d_note: 'Autosaves; turn the current line into a to-do',
+      d_today: 'Greeting, time, weather and a quote in one banner', d_todo: 'Unfinished items carry over; the agent can read and edit', d_note: 'Two-way sync with the ## todo body of 0-workspace.md; shortcuts send the current line to the agent',
       d_calendar: 'Events from your macOS calendars and ICS subscriptions, with a month view', d_weather: 'Weather and air quality from Open-Meteo', d_clock: 'Time, greeting and year progress',
       night: 'Good night', morning: 'Good morning', noon: 'Good afternoon', afternoon: 'Good afternoon', evening: 'Good evening', greetName: '{g}, {name}',
       week: 'Week {n}', year: '{n}% of the year', nextQuote: 'Next quote',
       addTodo: 'Add a to-do', carried: 'Carried over', done: 'Completed {n}', remove: 'Remove', complete: 'Complete', reopen: 'Reopen', noTodos: 'Nothing to do',
-      notePlaceholder: 'Jot something down', saved: 'Saved {t}', saving: 'Saving…', lineToTodo: 'Current line to to-do',
+      clickToEdit: 'Click to edit', notePlaceholder: 'Jot something down', unsaved: 'Not saved to the file yet', conflictHint: 'The file changed outside Workboard', reload: 'Reload', reloadHint: 'Discard local edits and re-read the file', overwrite: 'Overwrite', overwriteHint: 'Write this card over that section of the file',
+      f_notePresets: 'Shortcuts, one per line: name | prompt ({line} = current line)',
       setCity: 'Set a city', feels: 'Feels {n}°', humidity: 'Humidity {n}%',
       wx_clear: 'Clear', wx_partly: 'Partly cloudy', wx_cloud: 'Overcast', wx_fog: 'Fog', wx_drizzle: 'Drizzle', wx_rain: 'Rain', wx_snow: 'Snow', wx_showers: 'Showers', wx_thunder: 'Thunderstorm',
       aqi0: 'Good', aqi1: 'Moderate', aqi2: 'Sensitive', aqi3: 'Unhealthy', aqi4: 'Very unhealthy', aqi5: 'Hazardous',
@@ -262,7 +266,7 @@ window.__ModuleLoader__.load({
       calConnect: 'Connect system calendar', calAsking: 'Waiting for permission…', calDenied: 'Allow DeepSeek Harness in System Settings → Privacy & Security → Calendars', f_systemCalendar: 'Show macOS system calendar',
       defaultBoard: 'Default', untitled: 'Untitled', newBoard: 'Board {n}', newBoardLabel: 'New board', rename: 'Double-click to rename',
       edit: 'Edit', doneEdit: 'Done', addWidget: 'Add widget', added: 'Added', add: 'Add', settings: 'Settings', save: 'Save', cancel: 'Cancel',
-      saved: 'Saved', cfg_personal: 'Personal', cfg_agent: 'Handing off to the agent', openSettings: 'Open settings',
+      saved: 'Saved', cfg_personal: 'Personal', cfg_agent: 'Handing off to the agent', cfg_notes: 'Notes', openSettings: 'Open settings',
       intro: 'Edit this board here: add widgets, drag to reorder, resize', introOk: 'Got it',
       searchWidget: 'Search widgets', cat_all: 'All', cat_daily: 'Daily', cat_agent: 'DeepSeek', cat_news: 'News', cat_tools: 'Productivity', cat_dev: 'Developer', cat_plugin: 'Plugins',
       deleteBoard: 'Delete board', confirmDelete: 'Confirm delete', size: 'Size', drag: 'Drag to reorder',
@@ -292,9 +296,11 @@ window.__ModuleLoader__.load({
       markAllRead: 'Mark all read', unreadCount: '{n} unread', f_hideRead: 'Hide read items',
       addHabit: 'Add a habit, press Enter', noHabits: 'Add a habit below, then tick the box for each day you do it', streak: '{n}-day streak', markDay: 'Check in for {d}', todayShort: 'Today',
       prompt: 'Quick prompt', usage: 'Usage', running: 'Running', git: 'Git repos', github: 'GitHub', system: 'System', photo: 'Photo frame', market: 'Markets',
-      d_market: 'Exchange rates, China / Hong Kong / US stocks and crypto prices', f_symbols: 'Symbols, one per line, optionally followed by a name', f_upColor: 'Gain colour', up_red: 'Red for gains', up_green: 'Green for gains',
+      d_market: 'Exchange rates, China / Hong Kong / US stocks, metals and crypto prices', f_symbols: 'Symbols, one per line, optionally followed by a name', f_upColor: 'Gain colour', up_red: 'Red for gains', up_green: 'Green for gains',
       mk_symbols: 'EUR/USD\nUSD/JPY\nusAAPL Apple\nBTC', mk_none: 'Add symbols in settings', mk_unknown: 'Unrecognized', mk_missing: 'Not found',
       trending: 'Trending', d_trending: 'Hot lists from Hacker News, GitHub, Reddit, Weibo, Zhihu and more', tr_none: 'Choose sources in settings',
+      f_trOrder: 'Source order', ph_trOrder: 'Comma-separated source ids, e.g. zhihu,github,36kr', tr_openSide: 'Open in the right-Sidebar browser',
+      awakeOff: 'Keep awake', awakeOn: 'Staying awake', awakeTip: 'Stops idle system sleep; the display still sleeps',
       tr_weibo: 'Weibo', tr_zhihu: 'Zhihu', tr_36kr: '36Kr', tr_sspai: 'sspai', tr_bilibili: 'Bilibili', tr_v2ex: 'V2EX',
       tr_hn: 'Hacker News', tr_github: 'GitHub', tr_producthunt: 'Product Hunt', tr_reddit: 'Reddit',
       d_photo: 'Cycles through photos in a local folder; click for the next one', f_photoDir: 'Photo folder', f_shuffle: 'Shuffle', f_every: 'Change every', every_m: '{n} min', every_h: '{n} h', every_d: '{n} day', every_off: 'Never',
@@ -322,7 +328,7 @@ window.__ModuleLoader__.load({
       f_prices: 'Prices, one per line: model input output [cache read] [cache write], USD per million tokens; a model prefix matches',
       f_orPrices: 'Estimate models without a price from OpenRouter list prices', u_costOr: '≈ ${n} (OpenRouter list price)',
       d_prompt: 'Start a new session from a line of text or a preset',
-      promptPlaceholder: 'Ask the agent something, Enter to send', sending: 'Sending…', f_presets: 'Presets, one per line: name | prompt', ws_label: 'Workspace', ws_default: 'Harness default', f_agentWorkspace: 'Task workspace',
+      promptPlaceholder: 'Ask the agent something, Enter to send', sending: 'Sending…', f_presets: 'Presets, one per line: name | prompt', ws_label: 'Workspace', ws_default: 'Harness default', f_agentWorkspace: 'Task workspace', f_noteFile: 'Notes file', f_noteSection: 'Notes section',
       defaultPresets: 'Plan today | Read my Workboard to-dos and calendar and pick the three things I should do today\nWeekly note | Read the to-dos I completed on Workboard this week and draft a short weekly update',
       toAgent: 'Hand to agent', itemCount: '{n} items',
       cat_mine: 'Mine', gen_card: 'Generate with agent', gen_hint: 'Describe what you want; the agent builds it and puts it on this board',
@@ -601,7 +607,7 @@ window.__ModuleLoader__.load({
 .wb-add input{flex:1;border:0;background:none;outline:none;padding:6px 0;color:var(--dsw-alias-label-primary);font:inherit}
 .wb-blank{color:var(--dsw-alias-label-secondary);padding:7px 4px}
 
-.wb-note{flex:1;resize:none;border:0;outline:none;background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary);border-radius:8px;padding:10px 12px;line-height:1.65;font:inherit;font-size:13px;min-height:0}
+.wb-prompt .wb-notefoot{margin-top:0}
 .wb-notefoot{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--dsw-alias-label-secondary);margin-top:8px;min-height:18px}
 .wb-notefoot button{color:var(--dsw-alias-brand-primary)}
 .wb-wsel{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;border-radius:6px;color:var(--dsw-alias-label-secondary);opacity:.55}
@@ -614,17 +620,34 @@ window.__ModuleLoader__.load({
 .wb-md h4{margin:10px 0 2px;font-size:13px;font-weight:600}
 .wb-md h5{margin:8px 0 2px;font-size:12px;font-weight:600;color:var(--dsw-alias-label-secondary)}
 .wb-md p{margin:2px 0}
+.wb-mdgap{flex:none}
 .wb-md ul,.wb-md ol{margin:2px 0;padding-left:18px}
 .wb-md li{margin:1px 0}
 .wb-md code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:var(--dsw-alias-bg-layer-2);border-radius:4px;padding:0 4px}
+.wb-md pre{margin:4px 0;padding:8px 10px;background:var(--dsw-alias-bg-layer-2);border-radius:8px;overflow:auto}
+.wb-md pre code{background:none;padding:0;font-size:12px;line-height:1.5;white-space:pre}
+.wb-md blockquote{margin:4px 0;padding-left:9px;border-left:2px solid var(--dsw-alias-border-l1);color:var(--dsw-alias-label-secondary)}
+.wb-md blockquote .wb-md{padding:0}
+.wb-md hr{margin:8px 0;border:0;border-top:1px solid var(--dsw-alias-border-l1)}
+.wb-md table{margin:4px 0;border-collapse:collapse;font-size:12px}
+.wb-md th,.wb-md td{border:1px solid var(--dsw-alias-border-l1);padding:3px 8px;text-align:left}
+.wb-md th{background:var(--dsw-alias-bg-layer-2);font-weight:600}
+.wb-md li[data-task]{list-style:none;margin-left:-16px;display:flex;align-items:baseline;gap:6px}
+.wb-mdbox{flex:none;width:11px;height:11px;border:1px solid var(--dsw-alias-border-l1);border-radius:3px;position:relative;top:1px}
+.wb-mdbox[data-done]{background:var(--dsw-alias-brand-primary);border-color:var(--dsw-alias-brand-primary)}
 .wb-md a{color:var(--dsw-alias-brand-primary);text-decoration:none}
 .wb-md a:hover{text-decoration:underline}
+.wb-mark{font-style:normal;margin-left:6px;font-size:13px;line-height:1;color:var(--dsw-alias-label-secondary);cursor:default}
+.wb-mark[data-tone=warn]{color:var(--dsw-alias-brand-primary);font-weight:600}
 .wb-notefoot .wb-auto{display:inline-flex;align-items:center;gap:4px;color:var(--dsw-alias-label-secondary)}
 .wb-notefoot .wb-auto[aria-pressed=true]{color:var(--dsw-alias-brand-primary)}
 .wb-auto svg{width:12px;height:12px}
 .wb-pbox{position:relative;flex:1;min-height:0;display:flex}
 .wb-pbox .wb-wsel{position:absolute;right:6px;bottom:6px}
 .wb-pbox[data-ws] textarea{padding-right:30px}
+.wb-preview{flex:1;min-height:36px;overflow:auto;border:1px solid transparent;border-radius:8px;padding:7px 10px;cursor:text;word-break:break-word}
+.wb-preview:hover{border-color:var(--dsw-alias-border-l1)}
+.wb-preview:focus-visible{outline:none;border-color:var(--dsw-alias-brand-primary)}
 
 .wb-head{display:flex;align-items:center;gap:8px;padding:20px 0 16px;flex-wrap:wrap;min-height:30px}
 .wb-head[data-editing]{position:sticky;top:0;z-index:5;background:var(--dsw-alias-bg-base)}
@@ -1000,6 +1023,11 @@ select.wb-input{appearance:none;-webkit-appearance:none;padding-right:34px;curso
 
 @media (max-width:900px){.wb-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.wb-card[data-c="4"]{grid-column:span 2}.wb-today .wb-tquote{display:none}}
 @media (max-width:600px){.wb-grid{grid-template-columns:minmax(0,1fr)}.wb-card{grid-column:auto!important}}
+.wb-awake{display:inline-flex;align-items:center;gap:6px;flex:none;white-space:nowrap;font-size:12px;padding:4px 8px;border-radius:8px;color:var(--dsw-alias-label-secondary);transition:background .15s,color .15s}
+.wb-awake:hover{background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary)}
+.wb-awake .wb-dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.35;transition:opacity .15s,box-shadow .15s}
+.wb-awake[data-on]{color:var(--dsw-alias-brand-primary)}
+.wb-awake[data-on] .wb-dot{opacity:1;box-shadow:0 0 0 3px color-mix(in srgb, currentColor 20%, transparent)}
 .wb-cw{position:relative;flex:1;min-height:0;display:flex;flex-direction:column;margin:0 -4px -4px}
 .wb-cwframe{flex:1;width:100%;min-height:0;border:0;display:block;background:transparent}
 .wb-cwerr{position:absolute;left:4px;right:4px;bottom:4px;display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:8px;background:var(--dsw-alias-bg-layer-2);border:1px solid var(--dsw-alias-border-l1);font-size:12px;color:var(--dsw-alias-state-error-primary)}
@@ -1164,6 +1192,8 @@ a.wb-otd-title:hover{color:var(--dsw-alias-brand-primary)}
     // 自定义 widget 的 iframe 文档：沙箱内的 CSP 禁止一切直接联网，只留内联脚本 / 样式和 data: 资源。
     const CUSTOM_PREFIX = 'custom.';
     const FRAME_NS = 'dsh-workboard-frame';
+    // 仓库桥允许的动作；iframe prelude 里另有一份同名常量（prelude 会被序列化进沙箱，必须自带）。
+    const VAULT_OPS = ['section', 'sectionWrite'];
     const FRAME_CSP = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:";
     const FRAME_TOKENS = {
       '--bg': '--dsw-alias-bg-base', '--card': '--dsw-alias-bg-layer-1', '--layer': '--dsw-alias-bg-layer-2',
@@ -1211,6 +1241,7 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
       const boot = JSON.parse(document.getElementById('workboard-boot').textContent);
       const NS = 'dsh-workboard-frame';
       const KEYS = ['size', 'config', 'data', 'dataAt', 'theme', 'lang'];
+      const VAULT_OPS = ['section', 'sectionWrite'];
       const post = msg => parent.postMessage({ns: NS, ...msg}, '*');
       const pending = new Map();
       const listeners = new Set();
@@ -1230,6 +1261,14 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
       workboard.fetch = (url, options = {}) => request('fetch', {url: String(url), as: options.as, fresh: options.fresh === true});
       workboard.save = data => request('save', {data}).then(r => { workboard.data = data ?? null; workboard.dataAt = r.dataAt; return true; });
       workboard.open = url => { post({type: 'open', url: String(url)}); };
+      // 让 widget 读写笔记卡片绑定的那段正文（host 侧白名单：section / sectionWrite）。
+      // 宿主没热加载时会一直等不到回复，6 秒后明确报错，而不是让卡片空白。
+      const race = (p, ms, message) => Promise.race([p, new Promise((_, reject) => setTimeout(() => reject(new Error(message)), ms))]);
+      workboard.vault = (op = 'section', payload = {}) => race(
+        request('vault', {op: VAULT_OPS.includes(op) ? op : 'section', payload}),
+        6000,
+        '宿主没有响应 vault 接口：需要完全退出 DSH 再重开，只刷新页面不够',
+      );
       workboard.ask = prompt => { post({type: 'ask', prompt: String(prompt)}); };
       window.workboard = workboard;
       const root = document.documentElement;
@@ -1595,6 +1634,13 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
           const prefs = usePrefs();
           const [offset, setOffset] = useState(0);
           const showWeather = config?.showWeather !== false;
+          const [awake, setAwake] = useState(false);
+          useEffect(() => { let live = true; call('power.get').then(r => { if (live) setAwake(r?.awake === true); }, () => {}); return () => { live = false; }; }, []);
+          const toggleAwake = () => {
+            const next = !awake;
+            setAwake(next);
+            call('power.set', {on: next}).then(r => setAwake(r?.awake === true), () => setAwake(!next));
+          };
           const showQuote = config?.showQuote !== false;
           const wx = useWeather(showWeather ? prefs : {});
           const lang = t('lang');
@@ -1624,6 +1670,8 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
               h('span', {className: 'wb-date'}, [now.toLocaleDateString(lang, {month: 'long', day: 'numeric'}), now.toLocaleDateString(lang, {weekday: 'long'}), zh ? lunar(now) : ''].filter(Boolean).join(' · '))),
             weather ? h('span', {className: 'wb-sep'}) : null,
             weather,
+            h('button', {type: 'button', className: 'wb-btn wb-awake', 'data-on': awake ? '' : undefined, 'aria-pressed': awake ? 'true' : 'false', title: t('awakeTip'), onClick: toggleAwake},
+              h('i', {className: 'wb-dot', 'aria-hidden': true}), awake ? t('awakeOn') : t('awakeOff')),
             showQuote && q.text ? h('button', {type: 'button', className: 'wb-btn wb-tquote', 'data-len': quoteLen(q.text), title: t('nextQuote'), onClick: () => setOffset(o => o + 1)},
               h('span', {className: 'wb-qtext'}, q.text, q.by ? h('cite', null, `— ${q.by}`) : null)) : null);
         }
@@ -1689,49 +1737,104 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
         }
         Todo.workboard = {apiVersion: 1, sizes: ['l', 'm', 't'], description: () => t('d_todo')};
 
-        function Note() {
+        function Note({size, config, setMark}) {
           useLocale();
-          const {note} = useData();
+          const ws = useWorkspace();
+          const presets = parsePresets(config?.presets);
           const [text, setText] = useState(null);
-          const [status, setStatus] = useState('');
+          const [unsaved, setUnsaved] = useState(false);
+          const [conflict, setConflict] = useState('');
+          const [error, setError] = useState('');
+          const base = useRef(null);   // 上次读到的 `## todo` 正文，写回时用它判外部改动
+          const rev = useRef(0);       // 上次读到的文件 mtime
           const dirty = useRef(false);
-          const focused = useRef(false);
           const timer = useRef(null);
           const area = useRef(null);
-          useEffect(() => data.start(), []);
+          const alive = useRef(true);
+          const latest = useRef('');
+          const adopt = part => { base.current = part.text; rev.current = part.mtime; latest.current = part.text; setText(part.text); setConflict(''); };
+          const load = () => call('vault.section', {}).then(part => {
+            if (!alive.current) return;
+            if (!part?.ok) { setError(part?.error ?? t('loadFailed')); return; }
+            dirty.current = false;
+            setUnsaved(false);
+            setError('');
+            adopt(part);
+          }, e => { if (alive.current) setError(String(e?.message || e)); });
           useEffect(() => {
-            if (note && !dirty.current && (!focused.current || text === null)) setText(note.text);
-          }, [note]);
-          useEffect(() => () => clearTimeout(timer.current), []);
-          const save = value => {
-            setStatus(t('saving'));
-            data.saveNote(value).then(saved => {
-              if (area.current?.value === value) dirty.current = false;
-              const d = new Date(saved.updatedAt);
-              setStatus(fill(t('saved'), {t: `${pad(d.getHours())}:${pad(d.getMinutes())}`}));
-            }, () => setStatus(t('loadFailed')));
+            alive.current = true;
+            load();
+            return () => { alive.current = false; clearTimeout(timer.current); setMark?.(null); };
+          }, [ws.path]);
+          // 文件被 Obsidian 等外部编辑改过：本地没有未保存内容就跟上，有就先拦下来。
+          useEffect(() => {
+            const id = setInterval(() => {
+              call('vault.section', {}).then(part => {
+                if (!alive.current || !part?.ok || part.mtime === rev.current) return;
+                rev.current = part.mtime;
+                if (dirty.current) { setConflict(t('conflictHint')); return; }
+                adopt(part);
+              }, () => {});
+            }, 5000);
+            return () => clearInterval(id);
+          }, [ws.path]);
+          const save = (value, force) => {
+            call('vault.sectionWrite', {text: value, expect: force ? null : base.current}).then(part => {
+              if (!alive.current) return;
+              if (latest.current === value) { dirty.current = false; setUnsaved(false); }
+              base.current = part.text;
+              rev.current = part.mtime;
+              setConflict('');
+              setError('');
+            }, e => {
+              if (!alive.current) return;
+              const message = String(e?.message || e);
+              setError(message);
+              // 只有「文件被改过」才给覆盖选项；纯网络/权限错误不该让人误以为可以强行写。
+              setConflict(/已变|changed/i.test(message) ? t('conflictHint') : '');
+            });
           };
           const onChange = e => {
             const value = e.target.value;
+            latest.current = value;
             setText(value);
             dirty.current = true;
+            setUnsaved(true);
             clearTimeout(timer.current);
             timer.current = setTimeout(() => save(value), 500);
           };
-          const lineToTodo = () => {
+          useEffect(() => () => { if (dirty.current) save(latest.current); }, []);
+          // 保存状态只做成标题旁的小角标：未保存 `*`，冲突或读失败 `!`；正常时不占任何位置。
+          useEffect(() => {
+            const text = conflict || error ? '!' : unsaved ? '*' : '';
+            setMark?.(text ? {text, tone: conflict || error ? 'warn' : 'plain', title: conflict || error || t('unsaved')} : null);
+          }, [unsaved, conflict, error]);
+          // 正在编辑就取光标所在行；渲染态没有光标，退回最后一个非空行。
+          const currentLine = () => {
             const el = area.current;
-            if (!el) return;
-            const p = el.selectionStart;
-            const line = (el.value.slice(0, p).split('\n').pop() + el.value.slice(p).split('\n')[0]).replace(/^\s*(?:[-*+]\s+(?:\[[ xX]\]\s+)?)?/, '').trim();
-            if (line) data.addTodo(line).catch(() => {});
+            const raw = el && el === document.activeElement
+              ? el.value.slice(0, el.selectionStart).split('\n').pop() + el.value.slice(el.selectionStart).split('\n')[0]
+              : (String(latest.current ?? '').split('\n').filter(line => line.trim()).pop() ?? '');
+            return raw.replace(/^\s*(?:[-*+]\s+(?:\[[ xX]\]\s+)?)?/, '').trim();
           };
-          return h(React.Fragment, null,
-            h('textarea', {ref: area, className: 'wb-note', value: text ?? '', placeholder: t('notePlaceholder'), spellCheck: false, onChange,
-              onFocus: () => { focused.current = true; }, onBlur: () => { focused.current = false; }}),
-            h('div', {className: 'wb-notefoot'}, h('span', null, status),
-              h('button', {type: 'button', className: 'wb-btn', onMouseDown: e => e.preventDefault(), onClick: lineToTodo}, t('lineToTodo'))));
+          // 预设里写了 {line} 就替换成当前行，没写就把当前行附在 prompt 后面。
+          const run = preset => {
+            const line = currentLine();
+            const prompt = preset.prompt.includes('{line}') ? preset.prompt.split('{line}').join(line) : line ? `${preset.prompt}\n\n${line}` : preset.prompt;
+            launch(prompt, ws.path, ws.id).catch(e => setError(String(e?.message || e)));
+          };
+          const trouble = conflict || error;
+          return h(PromptShell, {
+            size, ws, area, value: text ?? '', placeholder: t('notePlaceholder'),
+            onChange,
+            chips: presets.length ? h('div', {className: 'wb-chips'}, presets.map((p, i) => h('button', {key: i, type: 'button', className: 'wb-btn wb-chip', title: p.prompt, onMouseDown: e => e.preventDefault(), onClick: () => run(p)}, p.name))) : null,
+            footer: trouble ? h('div', {className: 'wb-notefoot'}, h('span', {title: trouble}, error || conflict),
+              conflict ? [h('button', {key: 'r', type: 'button', className: 'wb-btn', onMouseDown: e => e.preventDefault(), title: t('reloadHint'), onClick: load}, t('reload')),
+                h('button', {key: 'o', type: 'button', className: 'wb-btn', onMouseDown: e => e.preventDefault(), title: t('overwriteHint'), onClick: () => save(latest.current, true)}, t('overwrite'))] : null) : null,
+          });
         }
-        Note.workboard = {apiVersion: 1, sizes: ['l', 't', 'm', 's'], description: () => t('d_note')};
+        Note.workboard = {apiVersion: 1, sizes: ['l', 't', 'm', 's'], description: () => t('d_note'),
+          settings: [{key: 'presets', type: 'textarea', label: () => t('f_notePresets')}]};
 
         function Weather({size, openSettings}) {
           useLocale();
@@ -2543,6 +2646,10 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
           ['cfg_personal', [NAME_FIELD, WEEK_START_FIELD]],
           ['weather', LOCATION_FIELDS],
           ['cfg_agent', [{key: 'agentWorkspace', type: 'workspace', scope: 'global', default: '', label: () => t('f_agentWorkspace')}]],
+          ['cfg_notes', [
+            {key: 'noteFile', type: 'text', scope: 'global', default: '', label: () => t('f_noteFile'), placeholder: '0-raw/1-workspace/0-workspace.md'},
+            {key: 'noteSection', type: 'text', scope: 'global', default: 'todo', label: () => t('f_noteSection'), placeholder: 'todo'},
+          ]],
         ];
         const SETTING_FIELDS = SETTING_GROUPS.flatMap(([, fields]) => fields);
 
@@ -2807,30 +2914,71 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
           return name && prompt ? {name, prompt} : null;
         }).filter(Boolean).slice(0, 20);
 
-        function Prompt({size, config}) {
+        // 速记和 Prompt 快启共用的一套「输入框 + 工作区选择 + 快捷 chip」布局。
+        // 有内容且没在编辑时渲染 Markdown，点一下回到源码编辑，失焦或 Esc 再渲染回去。
+        function PromptShell({size, ws, box = true, area, value, placeholder, disabled, onChange, onKeyDown, chips, footer}) {
+          const text = String(value ?? '');
+          const [editing, setEditing] = useState(false);
+          const ref = useRef(null);
+          const attach = el => { ref.current = el; if (area) area.current = el; };
+          useEffect(() => {
+            const el = ref.current;
+            if (!editing || !el) return;
+            el.focus();
+            el.setSelectionRange(el.value.length, el.value.length);
+          }, [editing]);
+          const typing = editing || !text.trim();
+          const onKey = e => {
+            if (e.key === 'Escape') { setEditing(false); e.currentTarget.blur(); return; }
+            onKeyDown?.(e);
+          };
+          const edit = () => setEditing(true);
+          return h('div', {className: 'wb-prompt', 'data-size': size},
+            box ? h('div', {className: 'wb-pbox', 'data-ws': ws.list.length ? '' : undefined},
+              typing
+                ? h('textarea', {ref: attach, value: text, placeholder, disabled, spellCheck: false, onChange, onKeyDown: onKey,
+                  onBlur: () => setEditing(false), onFocus: () => setEditing(true)})
+                : h('div', {className: 'wb-preview', role: 'button', tabIndex: 0, title: t('clickToEdit'), onClick: edit,
+                  onKeyDown: e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); edit(); } }},
+                  h(Markdown, {text})),
+              h(WorkspaceSelect, {ws})) : null,
+            chips ?? null,
+            footer ?? null);
+        }
+
+        function Prompt({size, config, onConfig}) {
           useLocale();
-          const [text, setText] = useState('');
+          const [text, setText] = useState(typeof config?.draft === 'string' ? config.draft : '');
           const [busy, setBusy] = useState(false);
           const [error, setError] = useState('');
           const presets = parsePresets(config?.presets ?? t('defaultPresets'));
           const ws = useWorkspace();
+          const saveTimer = useRef(null);
+          useEffect(() => () => clearTimeout(saveTimer.current), []);
+          // 草稿存进卡片配置：换页/刷新后还在，发出去后清掉。
+          const edit = value => {
+            setText(value);
+            clearTimeout(saveTimer.current);
+            saveTimer.current = setTimeout(() => onConfig?.({draft: value}), 800);
+          };
+          const reset = () => { setText(''); clearTimeout(saveTimer.current); onConfig?.({draft: ''}); };
           const send = prompt => {
             if (busy || !prompt.trim()) return;
             setBusy(true);
             setError('');
-            launch(prompt.trim(), ws.path, ws.id).then(() => setText(''), e => setError(String(e?.message || e))).finally(() => setBusy(false));
+            launch(prompt.trim(), ws.path, ws.id).then(reset, e => setError(String(e?.message || e))).finally(() => setBusy(false));
           };
           const onKeyDown = e => {
             if (e.key !== 'Enter' || e.shiftKey || e.nativeEvent.isComposing) return;
             e.preventDefault();
             send(text);
           };
-          return h('div', {className: 'wb-prompt', 'data-size': size},
-            size === 's' ? null : h('div', {className: 'wb-pbox', 'data-ws': ws.list.length ? '' : undefined},
-              h('textarea', {value: text, placeholder: t('promptPlaceholder'), disabled: busy, spellCheck: false, onChange: e => setText(e.target.value), onKeyDown}),
-              h(WorkspaceSelect, {ws})),
-            presets.length ? h('div', {className: 'wb-chips'}, presets.map((p, i) => h('button', {key: i, type: 'button', className: 'wb-btn wb-chip', title: p.prompt, disabled: busy, onClick: () => send(p.prompt)}, p.name))) : null,
-            busy || error ? h('div', {className: error ? 'wb-calerr' : 'wb-muted', style: {fontSize: 12}}, error || t('sending')) : null);
+          return h(PromptShell, {
+            size, ws, box: size !== 's', value: text, placeholder: t('promptPlaceholder'), disabled: busy,
+            onChange: e => edit(e.target.value), onKeyDown,
+            chips: presets.length ? h('div', {className: 'wb-chips'}, presets.map((p, i) => h('button', {key: i, type: 'button', className: 'wb-btn wb-chip', title: p.prompt, disabled: busy, onClick: () => send(p.prompt)}, p.name))) : null,
+            footer: busy || error ? h('div', {className: error ? 'wb-calerr' : 'wb-muted', style: {fontSize: 12}}, error || t('sending')) : null,
+          });
         }
         Prompt.workboard = {
           apiVersion: 1, sizes: ['m', 'w', 'l', 't', 's'], description: () => t('d_prompt'),
@@ -2934,6 +3082,7 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
               const fail = e => reply(false, String(e?.message || e));
               if (m.type === 'ready') post({type: 'state', state: stateRef.current});
               else if (m.type === 'fetch') call('widget.fetch', {id, url: m.url, as: m.as, fresh: m.fresh === true}).then(v => reply(true, v), fail);
+              else if (m.type === 'vault') call(`vault.${VAULT_OPS.includes(m.op) ? m.op : 'section'}`, m.payload ?? {}).then(v => reply(true, v), fail);
               else if (m.type === 'save') {
                 call('widget.save', {id, data: m.data}).then(r => {
                   setDef(d => (d ? {...d, data: m.data ?? null, dataRev: r.dataRev, dataAt: r.dataAt} : d));
@@ -3337,8 +3486,10 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
           ],
         };
 
-        // 简报由 Agent 写入，只渲染标题、列表、粗体、行内代码和 http(s) 链接，全部生成 React 元素，不走 innerHTML。
-        const MD_INLINE = /\*\*([^*]+)\*\*|`([^`]+)`|\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g;
+        // 卡片里的 Markdown 渲染：GFM 常用子集（标题、列表、任务列表、表格、引用、代码块、分割线、
+        // 粗体/斜体/删除线/行内代码/链接/裸链接），全部生成 React 元素，不走 innerHTML。
+        // 一行 = 一个段落：这两张卡片常写「一行一件事」，按软换行合并反而难读。
+        const MD_INLINE = /\*\*([^*]+)\*\*|~~([^~]+)~~|`([^`]+)`|\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)|\*([^*\n]+)\*|(https?:\/\/[^\s<>()]+)/g;
         const mdInline = text => {
           const out = [];
           let last = 0;
@@ -3346,33 +3497,100 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
             if (m.index > last) out.push(text.slice(last, m.index));
             const key = out.length;
             if (m[1]) out.push(h('b', {key}, m[1]));
-            else if (m[2]) out.push(h('code', {key}, m[2]));
-            else out.push(h('a', {key, href: m[4], target: '_blank', rel: 'noopener noreferrer'}, m[3]));
+            else if (m[2]) out.push(h('del', {key}, m[2]));
+            else if (m[3]) out.push(h('code', {key}, m[3]));
+            else if (m[4]) out.push(h('a', {key, href: m[5], target: '_blank', rel: 'noopener noreferrer'}, m[4]));
+            else if (m[6]) out.push(h('i', {key}, m[6]));
+            else out.push(h('a', {key, href: m[7], target: '_blank', rel: 'noopener noreferrer'}, m[7]));
             last = m.index + m[0].length;
           }
           if (last < text.length) out.push(text.slice(last));
           return out;
         };
+        const mdCells = row => row.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map(cell => cell.trim());
+        const MD_RULE = /^\s*(?:-{3,}|\*{3,}|_{3,})\s*$/;
+        const MD_DELIM = /^\s*\|?\s*:?-+:?\s*(?:\|\s*:?-+:?\s*)*\|?\s*$/;
+        const mdAlign = cell => (cell.startsWith(':') && cell.endsWith(':') ? 'center' : cell.endsWith(':') ? 'right' : cell.startsWith(':') ? 'left' : undefined);
         function Markdown({text}) {
+          const src = String(text ?? '').replace(/\r\n?/g, '\n').split('\n');
           const blocks = [];
-          let list = null;
-          const close = () => { if (list) { blocks.push(h(list.tag, {key: blocks.length}, list.items)); list = null; } };
-          for (const raw of String(text ?? '').split('\n')) {
-            const line = raw.trimEnd();
-            const item = line.match(/^\s*(?:([-*+])|\d+[.)])\s+(.*)$/);
-            if (item) {
-              const tag = item[1] ? 'ul' : 'ol';
-              if (list && list.tag !== tag) close();
-              list ??= {tag, items: []};
-              list.items.push(h('li', {key: list.items.length}, mdInline(item[2])));
+          const list = {tag: '', items: []};
+          let blanks = 0;   // 连续空行数：空行有语义，按行高还原成间距，不折叠成一个
+          const flush = () => {
+            if (!list.items.length) return;
+            blocks.push(h(list.tag, {key: blocks.length}, list.items));
+            list.items = [];
+          };
+          // 补上刚跳过的空行间距；最多算 8 行，免得文件尾部误留一堆空行把卡片撑爆。
+          const gap = () => {
+            if (!blanks) return;
+            if (!blocks.length) { blanks = 0; return; }   // 开头的空行不留顶部空隙
+            blocks.push(h('div', {key: blocks.length, className: 'wb-mdgap', style: {height: `${Math.min(blanks, 8) * 1.6}em`}}));
+            blanks = 0;
+          };
+          for (let i = 0; i < src.length; i++) {
+            const line = src[i].trimEnd();
+            if (!line.trim()) { blanks++; flush(); continue; }
+            // 代码块：整段原样保留，里面的符号不再解析。
+            const fence = line.match(/^\s*```([\w+#-]*)\s*$/);
+            if (fence) {
+              flush();
+              gap();
+              const body = [];
+              while (++i < src.length && !/^\s*```\s*$/.test(src[i])) body.push(src[i]);
+              blocks.push(h('pre', {key: blocks.length, 'data-lang': fence[1] || undefined}, h('code', null, body.join('\n'))));
               continue;
             }
-            close();
-            if (!line.trim()) continue;
+            // 表格：本行有 | 且下一行是分隔行，列数还得对得上。
+            if (line.includes('|') && i + 1 < src.length && MD_DELIM.test(src[i + 1])) {
+              const head = mdCells(line);
+              if (head.length > 1 && mdCells(src[i + 1]).length === head.length) {
+                flush();
+                gap();
+                const align = mdCells(src[i + 1]).map(mdAlign);
+                const cell = (tag, value, k) => h(tag, {key: k, style: align[k] ? {textAlign: align[k]} : undefined}, mdInline(value ?? ''));
+                const rows = [];
+                let r = i + 2;   // i 是表头，i+1 是分隔行，数据从 i+2 开始
+                while (r < src.length && src[r].trim() && src[r].includes('|')) {
+                  const cells = mdCells(src[r++]);
+                  rows.push(h('tr', {key: rows.length}, head.map((_, k) => cell('td', cells[k], k))));
+                }
+                blocks.push(h('table', {key: blocks.length},
+                  h('thead', null, h('tr', null, head.map((c, k) => cell('th', c, k)))),
+                  rows.length ? h('tbody', null, rows) : null));
+                i = r - 1;
+                continue;
+              }
+            }
+            // 引用：连续的 > 行收成一块，内部按同样规则再渲染一层。
+            if (/^\s*>/.test(line)) {
+              flush();
+              gap();
+              const inner = [];
+              while (i < src.length && /^\s*>/.test(src[i])) inner.push(src[i++].replace(/^\s*>\s?/, ''));
+              i--;
+              if (inner.join('').trim()) blocks.push(h('blockquote', {key: blocks.length}, h(Markdown, {text: inner.join('\n')})));
+              continue;
+            }
+            if (MD_RULE.test(line)) { flush(); gap(); blocks.push(h('hr', {key: blocks.length})); continue; }
+            const item = line.match(/^\s*(?:([-*+])|(\d+)[.)])\s+(.*)$/);
+            if (item) {
+              const tag = item[1] ? 'ul' : 'ol';
+              if (!list.items.length) { flush(); gap(); }
+              else if (list.tag !== tag) flush();
+              list.tag = tag;
+              const body = item[3];
+              const task = body.match(/^\[([ xX])\]\s+(.*)$/);
+              list.items.push(h('li', {key: list.items.length, 'data-task': task ? '' : undefined},
+                task ? [h('span', {key: 'b', className: 'wb-mdbox', 'data-done': task[1] === ' ' ? undefined : ''}), mdInline(task[2])] : mdInline(body)));
+              continue;
+            }
+            flush();
+            gap();
             const head = line.match(/^(#{1,6})\s+(.*)$/);
             blocks.push(head ? h(head[1].length <= 2 ? 'h4' : 'h5', {key: blocks.length}, mdInline(head[2])) : h('p', {key: blocks.length}, mdInline(line)));
           }
-          close();
+          flush();
           return h('div', {className: 'wb-md'}, blocks);
         }
 
@@ -3652,7 +3870,7 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
         Market.workboard = {
           apiVersion: 1, sizes: ['t', 'm', 's', 'l', 'w'], defaultSize: 't', description: () => t('d_market'),
           settings: [
-            {key: 'symbols', type: 'textarea', default: () => t('mk_symbols'), label: () => t('f_symbols'), placeholder: 'USD/CNY\nsh600519\nhk00700\nusAAPL\nBTC'},
+            {key: 'symbols', type: 'textarea', default: () => t('mk_symbols'), label: () => t('f_symbols'), placeholder: 'USD/CNY\nsh600519 茅台\nhk00700\nusAAPL\nXAU 伦敦金\nsh518880 黄金ETF\nBTC'},
             {key: 'upColor', type: 'select', default: () => (t('lang').startsWith('zh') ? 'red' : 'green'), label: () => t('f_upColor'), options: [{value: 'red', label: () => t('up_red')}, {value: 'green', label: () => t('up_green')}]},
           ],
         };
@@ -3662,10 +3880,45 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
         const TR_OFF = new Set(['bilibili', 'v2ex']);
         const trSources = () => (t('lang').startsWith('zh') ? [...TR_CN, ...TR_INTL] : [...TR_INTL, ...TR_CN]);
         const trKey = id => `src_${id}`;
+        // 默认把 GitHub 排到第二位（微博默认关闭时它正好第二）；设置里的「信源顺序」可整体覆盖。
+        const TR_DEFAULT_ORDER = ['zhihu', 'github', 'weibo', '36kr', 'sspai', 'bilibili', 'v2ex', 'hn', 'producthunt', 'reddit'];
+        const trOrder = config => {
+          const base = trSources();
+          const raw = String(config?.order ?? '').toLowerCase().split(/[\s,，、]+/).map(s => s.trim()).filter(Boolean);
+          const wanted = raw.length ? raw : TR_DEFAULT_ORDER;
+          const rank = id => { const i = wanted.indexOf(id); return i === -1 ? 100 + base.indexOf(id) : i; };
+          return base.filter(id => config?.[trKey(id)] ?? !TR_OFF.has(id)).sort((a, b) => rank(a) - rank(b));
+        };
+        // 右侧栏浏览器（Desktop 用 webview）：点热榜条目直接在 DSH 里看，不跳外部浏览器。
+        // 右侧栏是挂在「会话」上的：工作台面板不是会话，直接 openTab 会失败，
+        // 所以失败时把主区切回会话（selectPanel(null)）再重试，最后才退回外部浏览器。
+        let sidebarRef = null;
+        let layoutRef = null;
+        try { ctx.inject?.(['sidebarRight'], c => { sidebarRef = c.sidebarRight; return () => { sidebarRef = null; }; }); } catch { /* 可选依赖 */ }
+        try { ctx.inject?.(['layout'], c => { layoutRef = c.layout; return () => { layoutRef = null; }; }); } catch { /* 可选依赖 */ }
+        const sidebarService = () => sidebarRef ?? ctx.get?.('sidebarRight');
+        const layoutService = () => layoutRef ?? ctx.get?.('layout');
+        const openInSidebar = url => {
+          const attempt = () => {
+            const sidebar = sidebarService();
+            if (!sidebar || typeof sidebar.openTab !== 'function') return false;
+            try { sidebar.openTab('browser', {params: {url}}); return true; } catch { return false; }
+          };
+          if (attempt()) return true;
+          const layout = layoutService();
+          if (!layout || typeof layout.selectPanel !== 'function') return false;
+          try { layout.selectPanel(null); } catch { return false; }
+          const delays = [80, 240, 600, 1200];
+          delays.forEach((delay, i) => setTimeout(() => {
+            if (attempt()) return;
+            if (i === delays.length - 1) { try { window.open(url, '_blank', 'noopener,noreferrer'); } catch { /* 弹窗被拦就放弃 */ } }
+          }, delay));
+          return true;
+        };
 
         function Trending({size, config, openSettings}) {
           useLocale();
-          const enabled = trSources().filter(id => config?.[trKey(id)] ?? !TR_OFF.has(id));
+          const enabled = trOrder(config);
           const [picked, setPicked] = useState(null);
           const source = enabled.includes(picked) ? picked : enabled[0];
           const res = useRemote('trending.get', source ? {source} : null, TRENDING_MS);
@@ -3677,7 +3930,9 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
           return h('div', {className: 'wb-trend'},
             enabled.length > 1 ? h('div', {className: 'wb-seg', role: 'tablist'}, enabled.map(id => h('button', {key: id, type: 'button', role: 'tab', className: 'wb-btn', 'aria-pressed': id === source, onClick: () => setPicked(id)}, t(`tr_${id}`)))) : null,
             h('div', {className: 'wb-rows'},
-              v ? v.items.map((it, i) => h('a', {key: `${i}${it.url}`, className: 'wb-row wb-rowbtn', ...readProps(read, it.url), href: it.url, target: '_blank', rel: 'noopener noreferrer', title: [it.title, it.meta].filter(Boolean).join('\n')},
+              v ? v.items.map((it, i) => h('a', {key: `${i}${it.url}`, className: 'wb-row wb-rowbtn', ...readProps(read, it.url), href: it.url, target: '_blank', rel: 'noopener noreferrer',
+                onClick: e => { if (!(e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) && config?.openInSidebar !== false && openInSidebar(it.url)) e.preventDefault(); },
+                title: [it.title, it.meta].filter(Boolean).join('\n')},
                 h('span', {className: 'wb-rank wb-num', 'data-top': i < 3 ? '' : undefined}, i + 1),
                 h('div', null, h('b', null, it.title), size === 'l' && it.meta ? h('small', null, it.meta) : null),
                 it.tag ? h('span', {className: 'wb-tag'}, it.tag) : null,
@@ -3686,7 +3941,11 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
         }
         Trending.workboard = {
           apiVersion: 1, sizes: ['l', 't', 'm', 'w'], defaultSize: 'l', description: () => t('d_trending'),
-          settings: [...TR_CN, ...TR_INTL].map(id => ({key: trKey(id), type: 'toggle', default: !TR_OFF.has(id), label: () => t(`tr_${id}`)})),
+          settings: [
+            {key: 'openInSidebar', type: 'toggle', default: true, label: () => t('tr_openSide')},
+            {key: 'order', type: 'text', default: '', label: () => t('f_trOrder'), placeholder: 'zhihu,github,weibo,36kr,sspai,bilibili,v2ex,hn,producthunt,reddit'},
+            ...[...TR_CN, ...TR_INTL].map(id => ({key: trKey(id), type: 'toggle', default: !TR_OFF.has(id), label: () => t(`tr_${id}`)})),
+          ],
         };
 
         const blank = text => h('div', {className: 'wb-blank'}, text);
@@ -5271,6 +5530,14 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
           const [renaming, setRenaming] = useState(false);
           const [confirmDelete, setConfirmDelete] = useState(false);
           const [drag, setDrag] = useState(null);
+          // 卡片标题旁的小角标：widget 自己上报（如速记的未保存 `*`），值没变就不重渲染。
+          const [marks, setMarks] = useState({});
+          const markOf = (id, mark) => setMarks(all => {
+            const prev = all[id] ?? null;
+            const key = JSON.stringify(mark ?? null);
+            if (JSON.stringify(prev) === key) return all;
+            return {...all, [id]: mark ?? null};
+          });
           const [error, setError] = useState('');
           const fail = e => setError(String(e?.message || e));
           const pageRef = useRef(null);
@@ -5431,6 +5698,7 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
 
           const card = cell => {
             const w = byId.get(cell.id);
+            const mark = marks[cell.id] ?? null;
             const size = w.sizes.includes(cell.size) ? cell.size : w.defaultSize;
             const [c, r] = SIZES[size];
             const openSettings = () => setModal({type: 'settings', id: cell.id});
@@ -5463,10 +5731,12 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
             !editing && w.settings.length && !(w.title && !w.banner) ? h('button', {type: 'button', className: 'wb-btn wb-hact', 'aria-label': t('settings'), title: t('settings'), onClick: openSettings}, h(Icon.gear)) : null,
             bannerEdit ? h('button', {type: 'button', className: 'wb-btn wb-hact wb-hedit', 'aria-label': t('edit'), title: t('edit'), onClick: () => setEditing(true)}, h(Icon.pencil)) : null,
             introHere ? introTip({top: 26, right: w.settings.length ? 20 : -10, '--ax': '8px'}) : null,
-            w.title && !w.banner ? h('header', null, h('h3', null, w.label()),
+            w.title && !w.banner ? h('header', null, h('h3', null, w.label(), mark ? h('i', {key: 'm', className: 'wb-mark', 'data-tone': mark.tone, title: mark.title, 'aria-label': mark.title}, mark.text) : null),
               !editing && w.settings.length ? h('button', {type: 'button', className: 'wb-btn wb-hact', 'aria-label': t('settings'), title: t('settings'), onClick: openSettings}, h(Icon.gear)) : null,
               w.custom && !editing ? h('button', {type: 'button', className: 'wb-btn wb-hact', 'aria-label': t('cw_edit'), title: t('cw_edit'), onClick: () => setModal({type: 'agent', id: cell.id})}, h(Icon.sparkle)) : null) : null,
-            h('div', {className: 'wb-body'}, renderSlot(SLOT, {size, config: cell.config ?? {}, editing, openSettings}, {only: cell.id})));
+            h('div', {className: 'wb-body'}, renderSlot(SLOT, {size, config: cell.config ?? {}, editing, openSettings,
+              onConfig: patch => updateCell(cell.id, {config: {...(cell.config ?? {}), ...patch}}),
+              setMark: m => markOf(cell.id, m)}, {only: cell.id})));
           };
 
           return h('div', {className: 'wb-page', ref: pageRef, onScroll: e => { if (board && !restoring.current) rememberScroll(board.id, e.currentTarget.scrollTop); }},

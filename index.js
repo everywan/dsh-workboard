@@ -10,6 +10,7 @@ import {repoStatus, fetchRepo} from './lib/git.js';
 import {githubOverview} from './lib/github.js';
 import {createSystem} from './lib/system.js';
 import {createPhotos} from './lib/photo.js';
+import {createPower} from './lib/power.js';
 import {createMarket} from './lib/market.js';
 import {createTrending} from './lib/trending.js';
 import {createQuotes} from './lib/quote.js';
@@ -25,6 +26,7 @@ import {createRecentFiles, isRisky} from './lib/files.js';
 import {createClipboard} from './lib/clipboard.js';
 import {createNetwork} from './lib/network.js';
 import {createAttention} from './lib/attention.js';
+import {createVault, notesLayout} from './lib/vault.js';
 import {createPorts} from './lib/ports.js';
 import {createApps} from './lib/apps.js';
 import {createStatus} from './lib/status.js';
@@ -852,6 +854,14 @@ export function createHandlers(store, fetcher = createFetcher(), agents = null, 
       return launch({prompt: p?.prompt, cwd: p?.cwd, timeZone: p?.timeZone});
     },
     'dsh-workboard/workspace.list': () => (services.workspaces ? services.workspaces() : null),
+    'dsh-workboard/vault.section': p => {
+      if (!services.vault) throw new UserError('unavailable', 'vault is not available');
+      return services.vault.section(p ?? {});
+    },
+    'dsh-workboard/vault.sectionWrite': p => {
+      if (!services.vault) throw new UserError('unavailable', 'vault is not available');
+      return services.vault.writeSection(p ?? {});
+    },
     'dsh-workboard/usage.get': async p => {
       if (!services.usage) throw new UserError('unavailable', 'usage is not available');
       return services.usage.summary({days: p?.days});
@@ -1075,6 +1085,14 @@ export function createHandlers(store, fetcher = createFetcher(), agents = null, 
     'dsh-workboard/board.create': p => store.createBoard(p?.title, p?.known),
     'dsh-workboard/board.delete': p => store.deleteBoard(String(p?.id)),
     'dsh-workboard/board.order': p => store.orderBoards(p?.order),
+    'dsh-workboard/power.get': () => ({awake: services.power.state()}),
+    'dsh-workboard/power.set': p => {
+      const on = p?.on === true;
+      try { services.power.set(on); } catch (error) { throw new UserError('unsupported', String(error?.message || error)); }
+      const saved = store.putPrefs({awake: on});
+      if (saved && typeof saved.catch === 'function') saved.catch(() => {});
+      return {awake: services.power.state()};
+    },
     'dsh-workboard/prefs.get': () => store.getPrefs(),
     'dsh-workboard/prefs.put': p => store.putPrefs(p?.prefs),
     'dsh-workboard/weather.get': p => getWeather(fetcher, {lat: p?.lat, lon: p?.lon, unit: p?.unit}),
@@ -1142,7 +1160,7 @@ const SETTING_ITEM = {
 
 const toolWidget = w => ({...widgetSummary(w), updatedAt: iso(w.updatedAt), lastError: w.lastError ? {...w.lastError, at: iso(w.lastError.at)} : null});
 
-export function createTools(store, {context} = {}) {
+export function createTools(store, {context, vault} = {}) {
   return [
     {
       name: 'workboard_todos',
@@ -1170,7 +1188,7 @@ export function createTools(store, {context} = {}) {
     },
     {
       name: 'workboard_note',
-      description: 'Read or change the scratch note on the user\'s Workboard dashboard (plain text, usually Markdown). `read` returns the note; `append` adds `text` as a new line at the end; `replace` overwrites the whole note with `text`, so read it first.',
+      description: 'Read or change the note shown on the user\'s Workboard note card. When a notes file is configured it is one `## section` of a Markdown file in the workspace, otherwise the card\'s own scratch note is used. `read` returns it; `append` adds `text` as a new line at the end; `replace` overwrites the whole note with `text`, so read it first.',
       parameters: {
         type: 'object',
         properties: {
@@ -1184,14 +1202,18 @@ export function createTools(store, {context} = {}) {
       async execute(args) {
         await store.ready;
         const {action, text} = args ?? {};
-        if (action === 'read') return {text: store.getNote().text};
+        const part = vault ? await vault.section().catch(() => null) : null;
+        // 没配工作区时退回旧的工作台存储；配了工作区但文件/段落对不上就直说，别偷偷写别处。
+        const legacy = !part || part.error === 'no-workspace';
+        const current = part?.ok ? part.text : legacy ? store.getNote().text : null;
+        if (current == null) throw new Error(part.error);
+        const where = part?.ok ? {file: part.file, section: part.title} : {};
+        if (action === 'read') return {text: current, ...where};
         if (typeof text !== 'string') throw new Error('text is required');
-        if (action === 'append') {
-          const current = store.getNote().text;
-          return {text: (await store.putNote(current && !current.endsWith('\n') ? `${current}\n${text}` : current + text)).text};
-        }
-        if (action === 'replace') return {text: (await store.putNote(text)).text};
-        throw new Error(`unknown action ${action}`);
+        if (action !== 'append' && action !== 'replace') throw new Error(`unknown action ${action}`);
+        const next = action === 'replace' ? text : current && !current.endsWith('\n') ? `${current}\n${text}` : current + text;
+        if (!part?.ok) return {text: (await store.putNote(next)).text};
+        return {text: (await vault.writeSection({text: next, expect: part.text})).text, ...where};
       },
     },
     {
@@ -1313,6 +1335,7 @@ export function apply(ctx) {
     git: createGit(ctx, run),
     github: createGithub(run),
     system: createSystem({run}),
+    power: createPower({spawn}),
     systemCalendar: createSystemCalendar({run}),
     photos: createPhotos({run, cacheDir: join(tmpdir(), 'dsh-workboard-photos')}),
     market: createMarket(fetcher),
@@ -1341,10 +1364,23 @@ export function apply(ctx) {
     poetry: createPoetry(fetcher),
     podcasts: createPodcasts(fetcher),
   };
+  // 速记卡片的工作区笔记：根目录复用设置里的 Agent 工作区，文件与段落在「设置 → 工作台」里改。
+  services.vault = createVault({
+    root: () => store.getPrefs()?.agentWorkspace,
+    layout: () => notesLayout(store.getPrefs()),
+    fallback: {read: async () => store.getNote(), write: text => store.putNote(text)},
+  });
   const handlers = createHandlers(store, fetcher, createAgentWatch(ctx), createLauncher(ctx), services);
-  const context = createContext({store, call: (method, payload) => handlers[`dsh-workboard/${method}`](payload)});
+  const context = createContext({store, vault: services.vault, call: (method, payload) => handlers[`dsh-workboard/${method}`](payload)});
   ctx.effect(() => () => { void store.close(); }, 'dsh-workboard: storage');
   ctx.effect(() => () => { services.system.stop(); services.clipboard.stop(); services.network.stop(); services.nowPlaying.stop(); }, 'dsh-workboard: samplers');
+  // 「保持唤醒」记住开关状态：Store 就绪后恢复，卸载时收回 caffeinate。
+  let powerClosed = false;
+  void store.ready.then(() => {
+    if (powerClosed || store.getPrefs()?.awake !== true) return;
+    try { services.power.set(true); } catch { /* 非 macOS 忽略 */ }
+  }).catch(() => {});
+  ctx.effect(() => () => { powerClosed = true; services.power.dispose(); }, 'dsh-workboard: keep-awake');
 
   // 共享通道 /api 只允许一个 interceptor，每个方法注册独立的 Fetch 路由。
   for (const method of Object.keys(handlers)) {
@@ -1357,7 +1393,7 @@ export function apply(ctx) {
   }
 
   const tools = ctx.get('tools');
-  if (tools) for (const tool of createTools(store, {context})) ctx.effect(() => tools.register(tool), `dsh-workboard: ${tool.name} tool`);
+  if (tools) for (const tool of createTools(store, {context, vault: services.vault})) ctx.effect(() => tools.register(tool), `dsh-workboard: ${tool.name} tool`);
 
   const skills = ctx.get?.('skills');
   if (typeof skills?.register === 'function') {

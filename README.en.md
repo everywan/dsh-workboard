@@ -84,7 +84,7 @@ If you are an agent interacting with Workboard:
 | Pinned sessions | `t` `l` `m` `w` | Your pinned sessions with a preview of each session's latest message |
 | **Productivity** | | |
 | To-do | `l` `m` `t` | Open items on top, completed items collapsed; unfinished items from earlier days are badged as carried over |
-| Notes | `l` `t` `m` `s` | Autosaving scratchpad; turn the current line into a to-do with one click |
+| Notes | `l` `t` `m` `s` | Scratchpad that can bind to one section of a Markdown note in the workspace (file and section are set in Settings, e.g. `## todo` in `0-raw/1-workspace/0-workspace.md`; unset keeps the card's own store), autosaves and refuses to overwrite external edits; renders Markdown when unfocused and returns to source on click |
 | Calendar | `t` `l` `s` `m` | Month grid and selected day's schedule from one or more ICS subscriptions, including recurring events |
 | Habits | `m` `l` `t` `w` | Check in for any day of the past week and track your current streak |
 | Focus | `m` `s` | Pomodoro timer that keeps running across boards and panels, sends a system notification when done, and tracks today's completed sessions |
@@ -129,7 +129,7 @@ If you are an agent interacting with Workboard:
 | Podcasts | `l` `t` `m` `w` | Latest episodes from Podcast RSS / `rsshub://`, Apple Podcasts (link, `apple:ID`, or name), and Xiaoyuzhou plus Tech podcast charts, with cross-platform in-card playback and one-click agent episode summaries |
 | Markets | `t` `m` `s` `l` `w` | Forex (`USD/CNY`), China / HK / US equities (`sh600519`, `hk00700`, `usAAPL`), and crypto (`BTC`, `cg:<id>`) |
 
-Note: every widget that hands work to the agent (Agent, Quick prompt, Attention, Daily brief, and others) shares one workspace selection; PRs in Attention reuse the GitHub widget's query and cache. Shared preferences (your name, week start day, city, temperature unit, and agent workspace) can also be configured under **Settings → Workboard**. New built-in widgets added in future updates appear in the gallery without altering existing boards.
+Note: every widget that hands work to the agent (Agent, Quick prompt, Attention, Daily brief, and others) shares one workspace selection; PRs in Attention reuse the GitHub widget's query and cache. Shared preferences (your name, week start day, city, temperature unit, agent workspace, and notes file and section) can also be configured under **Settings → Workboard**. New built-in widgets added in future updates appear in the gallery without altering existing boards.
 
 </details>
 
