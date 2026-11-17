@@ -73,7 +73,7 @@ window.__ModuleLoader__.load({
       calConnect: '连接系统日历', calAsking: '等待授权…', calDenied: '在「系统设置 → 隐私与安全性 → 日历」里允许 DeepSeek Harness', f_systemCalendar: '显示 macOS 系统日历',
       defaultBoard: '默认', untitled: '未命名', newBoard: '看板 {n}', newBoardLabel: '新建看板', rename: '双击改名',
       edit: '编辑', doneEdit: '完成', addWidget: '添加 widget', added: '已添加', add: '添加', settings: '设置', save: '保存', cancel: '取消',
-      saved: '已保存', cfg_personal: '个人', cfg_agent: '交给 Agent 时', cfg_notes: '速记笔记', openSettings: '打开设置',
+      saved: '已保存', cfg_personal: '个人', cfg_agent: '交给 Agent 时', cfg_notes: '速记笔记', cfg_repo: '仓库视图', openSettings: '打开设置',
       intro: '点这里编辑看板：添加 widget、拖动排序、调整尺寸', introOk: '知道了',
       searchWidget: '搜索 widget', cat_all: '全部', cat_daily: '日常', cat_agent: 'DeepSeek', cat_news: '资讯', cat_tools: '效率', cat_dev: '开发', cat_plugin: '插件',
       deleteBoard: '删除看板', confirmDelete: '确认删除', size: '尺寸', drag: '拖动排序',
@@ -135,7 +135,7 @@ window.__ModuleLoader__.load({
       f_prices: '单价（每行一个：模型 输入 输出 [缓存读] [缓存写]，美元 / 百万 token；模型可写前缀）',
       f_orPrices: '未填单价的模型按 OpenRouter 公开价估算', u_costOr: '约 ${n}（按 OpenRouter 公开价）',
       d_prompt: '一句话或预设模板直接开新会话',
-      promptPlaceholder: '让 Agent 做点什么，回车发送', sending: '发送中…', f_presets: '预设（每行一个：名称 | prompt）', ws_label: '工作区', ws_default: '跟随 Harness 默认', f_agentWorkspace: '任务工作区', f_noteFile: '笔记文件', f_noteSection: '笔记段落',
+      promptPlaceholder: '让 Agent 做点什么，回车发送', sending: '发送中…', f_presets: '预设（每行一个：名称 | prompt）', ws_label: '工作区', ws_default: '跟随 Harness 默认', f_agentWorkspace: '任务工作区', f_noteFile: '笔记文件', f_noteSection: '笔记段落', f_repoFile: '路线图文件', f_repoDaily: '日报目录', f_repoArchive: '日报归档目录（可留空）',
       defaultPresets: '今日计划 | 读取我工作台上的待办和日程，帮我排出今天最该做的三件事\n周报草稿 | 读取我工作台上本周完成的待办，写一份简短的周报草稿',
       toAgent: '交给 Agent', itemCount: '{n} 条',
       cat_mine: '我的', gen_card: '用 Agent 生成', gen_hint: '说一句想要什么，Agent 做好后放到当前看板',
@@ -266,7 +266,7 @@ window.__ModuleLoader__.load({
       calConnect: 'Connect system calendar', calAsking: 'Waiting for permission…', calDenied: 'Allow DeepSeek Harness in System Settings → Privacy & Security → Calendars', f_systemCalendar: 'Show macOS system calendar',
       defaultBoard: 'Default', untitled: 'Untitled', newBoard: 'Board {n}', newBoardLabel: 'New board', rename: 'Double-click to rename',
       edit: 'Edit', doneEdit: 'Done', addWidget: 'Add widget', added: 'Added', add: 'Add', settings: 'Settings', save: 'Save', cancel: 'Cancel',
-      saved: 'Saved', cfg_personal: 'Personal', cfg_agent: 'Handing off to the agent', cfg_notes: 'Notes', openSettings: 'Open settings',
+      saved: 'Saved', cfg_personal: 'Personal', cfg_agent: 'Handing off to the agent', cfg_notes: 'Notes', cfg_repo: 'Repo views', openSettings: 'Open settings',
       intro: 'Edit this board here: add widgets, drag to reorder, resize', introOk: 'Got it',
       searchWidget: 'Search widgets', cat_all: 'All', cat_daily: 'Daily', cat_agent: 'DeepSeek', cat_news: 'News', cat_tools: 'Productivity', cat_dev: 'Developer', cat_plugin: 'Plugins',
       deleteBoard: 'Delete board', confirmDelete: 'Confirm delete', size: 'Size', drag: 'Drag to reorder',
@@ -328,7 +328,7 @@ window.__ModuleLoader__.load({
       f_prices: 'Prices, one per line: model input output [cache read] [cache write], USD per million tokens; a model prefix matches',
       f_orPrices: 'Estimate models without a price from OpenRouter list prices', u_costOr: '≈ ${n} (OpenRouter list price)',
       d_prompt: 'Start a new session from a line of text or a preset',
-      promptPlaceholder: 'Ask the agent something, Enter to send', sending: 'Sending…', f_presets: 'Presets, one per line: name | prompt', ws_label: 'Workspace', ws_default: 'Harness default', f_agentWorkspace: 'Task workspace', f_noteFile: 'Notes file', f_noteSection: 'Notes section',
+      promptPlaceholder: 'Ask the agent something, Enter to send', sending: 'Sending…', f_presets: 'Presets, one per line: name | prompt', ws_label: 'Workspace', ws_default: 'Harness default', f_agentWorkspace: 'Task workspace', f_noteFile: 'Notes file', f_noteSection: 'Notes section', f_repoFile: 'Roadmap file', f_repoDaily: 'Daily notes folder', f_repoArchive: 'Archived daily notes (optional)',
       defaultPresets: 'Plan today | Read my Workboard to-dos and calendar and pick the three things I should do today\nWeekly note | Read the to-dos I completed on Workboard this week and draft a short weekly update',
       toAgent: 'Hand to agent', itemCount: '{n} items',
       cat_mine: 'Mine', gen_card: 'Generate with agent', gen_hint: 'Describe what you want; the agent builds it and puts it on this board',
@@ -1193,7 +1193,7 @@ a.wb-otd-title:hover{color:var(--dsw-alias-brand-primary)}
     const CUSTOM_PREFIX = 'custom.';
     const FRAME_NS = 'dsh-workboard-frame';
     // 仓库桥允许的动作；iframe prelude 里另有一份同名常量（prelude 会被序列化进沙箱，必须自带）。
-    const VAULT_OPS = ['section', 'sectionWrite'];
+    const VAULT_OPS = ['scan', 'week', 'roadmap', 'toggle', 'section', 'sectionWrite', 'open'];
     const FRAME_CSP = "default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:";
     const FRAME_TOKENS = {
       '--bg': '--dsw-alias-bg-base', '--card': '--dsw-alias-bg-layer-1', '--layer': '--dsw-alias-bg-layer-2',
@@ -1241,7 +1241,7 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
       const boot = JSON.parse(document.getElementById('workboard-boot').textContent);
       const NS = 'dsh-workboard-frame';
       const KEYS = ['size', 'config', 'data', 'dataAt', 'theme', 'lang'];
-      const VAULT_OPS = ['section', 'sectionWrite'];
+      const VAULT_OPS = ['scan', 'week', 'roadmap', 'toggle', 'section', 'sectionWrite', 'open'];
       const post = msg => parent.postMessage({ns: NS, ...msg}, '*');
       const pending = new Map();
       const listeners = new Set();
@@ -2647,8 +2647,14 @@ html:hover::-webkit-scrollbar-thumb,html:hover ::-webkit-scrollbar-thumb{backgro
           ['weather', LOCATION_FIELDS],
           ['cfg_agent', [{key: 'agentWorkspace', type: 'workspace', scope: 'global', default: '', label: () => t('f_agentWorkspace')}]],
           ['cfg_notes', [
-            {key: 'noteFile', type: 'text', scope: 'global', default: '', label: () => t('f_noteFile'), placeholder: '0-raw/1-workspace/0-workspace.md'},
+            {key: 'noteFile', type: 'text', scope: 'global', default: '0-raw/1-workspace/0-workspace.md', label: () => t('f_noteFile'), placeholder: '0-raw/1-workspace/0-workspace.md'},
             {key: 'noteSection', type: 'text', scope: 'global', default: 'todo', label: () => t('f_noteSection'), placeholder: 'todo'},
+          ]],
+          // 仓库视图（Roadmap / 本周）的数据源；留空即关闭，两个卡片会提示未配置。
+          ['cfg_repo', [
+            {key: 'repoFile', type: 'text', scope: 'global', default: '0-raw/1-workspace/0-workspace.md', label: () => t('f_repoFile'), placeholder: '0-raw/1-workspace/0-workspace.md'},
+            {key: 'repoDailyDir', type: 'text', scope: 'global', default: '1-log/0-daily', label: () => t('f_repoDaily'), placeholder: '1-log/0-daily'},
+            {key: 'repoArchiveDir', type: 'text', scope: 'global', default: '1-log/2-archive/daily', label: () => t('f_repoArchive'), placeholder: '1-log/2-archive/daily'},
           ]],
         ];
         const SETTING_FIELDS = SETTING_GROUPS.flatMap(([, fields]) => fields);

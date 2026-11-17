@@ -26,7 +26,7 @@ import {createRecentFiles, isRisky} from './lib/files.js';
 import {createClipboard} from './lib/clipboard.js';
 import {createNetwork} from './lib/network.js';
 import {createAttention} from './lib/attention.js';
-import {createVault, notesLayout} from './lib/vault.js';
+import {createVault, notesLayout, repoLayout} from './lib/vault.js';
 import {createPorts} from './lib/ports.js';
 import {createApps} from './lib/apps.js';
 import {createStatus} from './lib/status.js';
@@ -854,6 +854,19 @@ export function createHandlers(store, fetcher = createFetcher(), agents = null, 
       return launch({prompt: p?.prompt, cwd: p?.cwd, timeZone: p?.timeZone});
     },
     'dsh-workboard/workspace.list': () => (services.workspaces ? services.workspaces() : null),
+    'dsh-workboard/vault.scan': () => (services.vault ? services.vault.scan() : null),
+    'dsh-workboard/vault.week': p => {
+      if (!services.vault) throw new UserError('unavailable', 'vault is not available');
+      return services.vault.week(p);
+    },
+    'dsh-workboard/vault.roadmap': () => {
+      if (!services.vault) throw new UserError('unavailable', 'vault is not available');
+      return services.vault.roadmap();
+    },
+    'dsh-workboard/vault.toggle': p => {
+      if (!services.vault) throw new UserError('unavailable', 'vault is not available');
+      return services.vault.toggle(p);
+    },
     'dsh-workboard/vault.section': p => {
       if (!services.vault) throw new UserError('unavailable', 'vault is not available');
       return services.vault.section(p ?? {});
@@ -861,6 +874,10 @@ export function createHandlers(store, fetcher = createFetcher(), agents = null, 
     'dsh-workboard/vault.sectionWrite': p => {
       if (!services.vault) throw new UserError('unavailable', 'vault is not available');
       return services.vault.writeSection(p ?? {});
+    },
+    'dsh-workboard/vault.open': async p => {
+      if (!services.vault) throw new UserError('unavailable', 'vault is not available');
+      return services.vault.open(p);
     },
     'dsh-workboard/usage.get': async p => {
       if (!services.usage) throw new UserError('unavailable', 'usage is not available');
@@ -1368,7 +1385,10 @@ export function apply(ctx) {
   services.vault = createVault({
     root: () => store.getPrefs()?.agentWorkspace,
     layout: () => notesLayout(store.getPrefs()),
+    // 仓库视图（Roadmap / 本周）的数据源也从配置读，留空即关闭。
+    repo: () => repoLayout(store.getPrefs()),
     fallback: {read: async () => store.getNote(), write: text => store.putNote(text)},
+    open: (p = {}) => services.open(p),
   });
   const handlers = createHandlers(store, fetcher, createAgentWatch(ctx), createLauncher(ctx), services);
   const context = createContext({store, vault: services.vault, call: (method, payload) => handlers[`dsh-workboard/${method}`](payload)});
